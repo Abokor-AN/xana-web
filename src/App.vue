@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import Calendar from 'primevue/calendar'
+
+import { ref } from 'vue'
+
+const date = ref()
 </script>
 
 <template>
@@ -9,7 +14,9 @@ import HelloWorld from './components/HelloWorld.vue'
 
     <div class="wrapper">
       <HelloWorld msg="You did it!" />
-
+      <div class="card flex justify-center">
+        <Calendar v-model="date" />
+      </div>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
