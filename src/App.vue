@@ -6,6 +6,11 @@ import Calendar from 'primevue/calendar'
 import { ref } from 'vue'
 
 const date = ref()
+
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+const message = t('the_world')
 </script>
 
 <template>
@@ -17,6 +22,7 @@ const date = ref()
       <div class="card flex justify-center">
         <Calendar v-model="date" />
       </div>
+      <h1>{{ message }}</h1>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
