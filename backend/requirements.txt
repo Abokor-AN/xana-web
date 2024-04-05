@@ -1,4 +1,0 @@
-Django
-python-environ
-django-sslserver
-django-extensions
