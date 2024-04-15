@@ -1,2 +1,5 @@
 Django
 django-environ==0.8.1
+djangorestframework
+markdown
+django-filter
