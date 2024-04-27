@@ -36,27 +36,36 @@ DEBUG = env('DEBUG')
 # SECURITY WARNING: ADD IP
 ALLOWED_HOSTS = [env('SERVER_FRONT')]
 
+# JWT Keys
+
+try:
+    with open('private_key.pem', 'rb') as f:
+        private_key_data = f.read()
+    PRIVATE_KEY = private_key_data
+except:
+    PRIVATE_KEY = None
+
+
+try:
+    with open('public_key.pem', 'rb') as f:
+        public_key_data = f.read()
+    PUBLIC_KEY = public_key_data
+except:
+    PUBLIC_KEY = None
+
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'api'
+    'auth.apps.AuthConfig',
+    'home.apps.HomeConfig'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -71,8 +80,8 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                #'django.contrib.auth.context_processors.auth',
+                #'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -118,7 +127,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = False
+USE_I18N = True
 
 USE_TZ = False
 
