@@ -18,5 +18,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("home.urls")),
-    path("auth/", include("auth.urls"))
+    path("auth/", include("auth.urls")),
+    path("webhook/", include("webhook.urls")),
 ]

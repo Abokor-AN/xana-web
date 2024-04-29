@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.staticfiles',
     'auth.apps.AuthConfig',
-    'home.apps.HomeConfig'
+    'home.apps.HomeConfig',
+    'webhook.apps.WebhookConfig',
 ]
 
 MIDDLEWARE = [
