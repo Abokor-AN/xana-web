@@ -65,7 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'auth.apps.AuthConfig',
     'home.apps.HomeConfig',
-    'webhook.apps.WebhookConfig',
+    'hook.apps.HookConfig',
 ]
 
 MIDDLEWARE = [
