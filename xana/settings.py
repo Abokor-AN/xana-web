@@ -38,20 +38,25 @@ ALLOWED_HOSTS = [env('SERVER_FRONT')]
 
 # JWT Keys
 
-try:
-    with open('private_key.pem', 'rb') as f:
-        private_key_data = f.read()
-    PRIVATE_KEY = private_key_data
-except:
-    PRIVATE_KEY = None
+PRIVATE_KEY = None
+private_key_path = 'private_key.pem'
 
+if os.path.exists(private_key_path):
+    try:
+        with open(private_key_path, 'rb') as f:
+            PRIVATE_KEY = f.read()
+    except IOError as e:
+        print(f"Erreur lors de la lecture du fichier : {e}")
 
-try:
-    with open('public_key.pem', 'rb') as f:
-        public_key_data = f.read()
-    PUBLIC_KEY = public_key_data
-except:
-    PUBLIC_KEY = None
+PUBLIC_KEY = None
+public_key_path = 'public_key.pem'
+
+if os.path.exists(public_key_path):
+    try:
+        with open(public_key_path, 'rb') as f:
+            PUBLIC_KEY = f.read()
+    except IOError as e:
+        print(f"Erreur lors de la lecture du fichier : {e}")
 
 # Application definition
 
@@ -71,18 +76,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'xana.urls'
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")  # ROOT dir for templates
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                #'django.contrib.auth.context_processors.auth',
-                #'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -94,31 +98,24 @@ WSGI_APPLICATION = 'xana.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if os.environ.get('DB_ENGINE') and os.environ.get('DB_ENGINE') == "mysql":
+    DATABASES = { 
+      'default': {
+        'ENGINE'  : 'django.db.backends.mysql', 
+        'NAME'    : os.getenv('DB_NAME'     , 'appseed_db'),
+        'USER'    : os.getenv('DB_USERNAME' , 'appseed_db_usr'),
+        'PASSWORD': os.getenv('DB_PASS'     , 'pass'),
+        'HOST'    : os.getenv('DB_HOST'     , 'localhost'),
+        'PORT'    : os.getenv('DB_PORT'     , 3306),
+        }, 
     }
-}
-
-
-# Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Internationalization
@@ -128,7 +125,7 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-USE_I18N = True
+USE_I18N = False
 
 USE_TZ = False
 
