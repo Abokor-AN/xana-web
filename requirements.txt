@@ -1,5 +1,4 @@
 Django
 django-environ==0.8.1
 marshmallow
-bcrypt
 jwcrypto
