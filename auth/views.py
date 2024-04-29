@@ -202,8 +202,10 @@ def reset_password(request, token):
 
         try:
 
+            # Nous vérifions si l'objet ResetPassword avec le token fourni en lien de l'url existe dans la db
             if ResetPassword.objects.filter(token=token).exists():
 
+                # Nous allons récuperer l'objet ResetPassword avec le token fourni en lien de l'url
                 rp = ResetPassword.objects.get(token=token)
 
                 # Datetime actuelle
@@ -239,8 +241,10 @@ def reset_password(request, token):
                     # Retourne cette ligne si l'utilisateur saisi une adress email valide pour lequel reset le password
                     return JsonResponse({'message': 'The password has been reset successfully.'}, status=200)
 
+                # Nous retournons ce message si le token existe en db mais est en état expiré
                 return JsonResponse({'message': 'The password reset token has expired. Please generate a new one.'}, status=403)
 
+            # Nous retournons ce message si le token n'existe pas
             return JsonResponse({'message': 'The password reset token does not exist.'}, status=404)
 
         except ValidationError as err:
@@ -256,6 +260,7 @@ def get_public_key(request):
 
     if request.method == 'GET':
 
+        # Nous retournon la clé public pour permettre de validé le token à travers nos applications
         return JsonResponse({'message': 'Public key shared successfully.', 'key': settings.PUBLIC_KEY.decode('utf-8')}, status=200)
 
     # Retourne cette ligne si la méthode appelé est autre que GET
